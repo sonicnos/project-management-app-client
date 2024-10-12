@@ -9,7 +9,7 @@ export interface Project {
 }
 
 export enum Status {
-  ToDo= "To Do",
+  ToDo = "To Do",
   WorkInProgress = "Work InProgress",
   UnderReview = "Under Review",
   Completed = "Completed",
@@ -60,7 +60,6 @@ export interface Task {
   attachments?: Attachment[];
 }
 
-
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL }),
   reducerPath: "api",
@@ -93,17 +92,23 @@ export const api = createApi({
       }),
       invalidatesTags: ["Tasks"],
     }),
-    updateTaskStatus: build.mutation<Task, {taskId: number; status: string}>({
-      query: ({taskId, status}) => ({
+    updateTaskStatus: build.mutation<Task, { taskId: number; status: string }>({
+      query: ({ taskId, status }) => ({
         url: `tasks/${taskId}/status`,
         method: "PATCH",
-        body: {status},
+        body: { status },
       }),
-    invalidatesTags: (result, error, {taskId}) => ([{type: "Tasks",id: taskId},]),
+      invalidatesTags: (result, error, { taskId }) => [
+        { type: "Tasks", id: taskId },
+      ],
     }),
   }),
 });
 
 export const {
-  useGetProjectsQuery, useCreateProjectMutation, useGetTasksQuery, useCreateTaskMutation,
+  useGetProjectsQuery,
+  useCreateProjectMutation,
+  useGetTasksQuery,
+  useCreateTaskMutation,
+  useUpdateTaskStatusMutation,
 } = api;
